@@ -1,8 +1,11 @@
-const electron = require('electron')
+/*const electron = require('electron')
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
+*/
+
+const {app, BrowserWindow} = require('electron')
 
 const path = require('path')
 const url = require('url')
@@ -11,18 +14,24 @@ const url = require('url')
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
+
+
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
+	  fullscreen: true,
+	  frame: false,
       webPreferences: {
-          kiosk: false,
-          session: null,
+          kiosk: true,
+          //session: null,
           nodeIntegration: false
       }
   });
 
+
   var session = mainWindow.webContents.session;
-  session.clearStorageData([]);
+  if(session)
+    session.clearStorageData([]);
 
   //mainWindow.setMenu(null);
 
@@ -32,6 +41,7 @@ function createWindow () {
     protocol: 'http:',
     slashes: true
   }));
+
 
 
   // Open the DevTools.
@@ -45,6 +55,8 @@ function createWindow () {
     mainWindow = null;
   })
 }
+
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -63,9 +75,9 @@ app.on('window-all-closed', function () {
 app.on('activate', function () {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
+  //if (mainWindow === null) {
     createWindow()
-  }
+  //}
 })
 
 // In this file you can include the rest of your app's specific main process
