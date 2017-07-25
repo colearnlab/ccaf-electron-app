@@ -14,24 +14,28 @@ let mainWindow
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-      kiosk: true,
       webPreferences: {
-          sandbox: true,
-          //devTools: false,
+          kiosk: false,
+          session: null,
+          nodeIntegration: false
       }
   });
+
+  var session = mainWindow.webContents.session;
+  session.clearStorageData([]);
+
   //mainWindow.setMenu(null);
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
-      pathname: 'csteps.education.illinois.edu/', 
+    pathname: 'csteps.education.illinois.edu/',
     protocol: 'http:',
     slashes: true
   }));
 
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
