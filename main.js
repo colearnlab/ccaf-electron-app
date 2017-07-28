@@ -22,7 +22,7 @@ function createWindow () {
 	  fullscreen: true,
 	  frame: false,
       webPreferences: {
-          kiosk: true,
+          //kiosk: true,
           //session: null,
           nodeIntegration: false
       }
