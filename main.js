@@ -19,8 +19,8 @@ let mainWindow
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-	  fullscreen: true,
-	  frame: false,
+	  //fullscreen: true,
+	  //frame: false,
       webPreferences: {
           //kiosk: true,
           //session: null,
