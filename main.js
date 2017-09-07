@@ -21,13 +21,15 @@ function createWindow () {
   mainWindow = new BrowserWindow({
 	  //fullscreen: true,
 	  //frame: false,
-	  kiosk: true,
+	  //kiosk: true,
       webPreferences: {
           //kiosk: true,
           //session: null,
           nodeIntegration: false
       }
   });
+
+	mainWindow.maximize();
 
 
   var session = mainWindow.webContents.session;
