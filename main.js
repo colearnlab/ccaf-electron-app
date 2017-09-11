@@ -7,6 +7,8 @@ const BrowserWindow = electron.BrowserWindow
 
 const {app, BrowserWindow} = require('electron')
 
+const {spawn} = require('child_process')
+
 const path = require('path')
 const url = require('url')
 
@@ -45,18 +47,53 @@ function createWindow () {
     slashes: true
   }));
 
+	// spawn ffmpeg
+	var now = new Date(),
+		day = now.getDate(),
+		month = now.getMonth() + 1,
+		year = now.getFullYear(),
+		hour = now.getHours(),
+		minute = now.getMinutes(),
+		second = now.getSeconds(),
+		datestring = "" + day + "-" + month + "-" + year + "_" + hour + "." + minute + "." + second;
+	var output_file = path.join(__dirname, "audio", "audio_" + datestring + ".flac");
+	
+	var ffmpeg = spawn(	
+		path.join(__dirname, 'ffmpeg.exe'), 
+		[
+			'-f', 'dshow',
+			'-i', 'audio=Microphone Array (Realtek High Definition Audio(SST))',
+			output_file
+		]
+	);
 
+	var printbuffer = function(d) {
+		console.log(d.toString());
+	};
+	
+	ffmpeg.stdout.on('data', printbuffer);
+	ffmpeg.stderr.on('data', printbuffer);
+	ffmpeg.on('close', function(code) {
+		console.log("ffmpeg exited with code " + code);
+	});
 
   // Open the DevTools.
   //mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
+	  // TODO kill ffmpeg
+		
+	  ffmpeg.kill('SIGINT');
+
+	  console.log("killed ffmpeg");
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     mainWindow = null;
-  })
+  });
+
+
 }
 
 
